@@ -18,7 +18,7 @@ std::string tokansuji(long n) {
     while(std::pow(10, keta) <= n) {
         if((n / (long)std::pow(10, keta)) % 10 != 0){
             std::string kansuji = "";
-            if((n / (long)std::pow(10, keta)) % 10 != 1) kansuji = numlist1[(n / (long)std::pow(10, keta)) % 10];
+            if((n / (long)std::pow(10, keta)) % 10 != 1 || keta%4 == 0) kansuji = numlist1[(n / (long)std::pow(10, keta)) % 10];
             kansuji += numlist2[keta%4];
             if(keta % 4 == 0) kansuji += numlist3[keta/4];
             ans = kansuji + ans;
