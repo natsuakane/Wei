@@ -3,8 +3,8 @@
 #include"Parser.cpp"
 
 int main() {
-    Parser parser("「案」乗五十三");
+    Parser parser("一足「案」掛五十三割三");
     parser.test();
-    //cout << tokansuji(211) << endl;
+
     return 0;
 }
