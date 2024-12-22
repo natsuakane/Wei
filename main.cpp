@@ -3,7 +3,7 @@
 #include"Parser.cpp"
 
 int main() {
-    Parser parser("一足「案」掛五十三割三");
+    Parser parser("五足二乗四乗二等六万五千五百四十一且一違二");
     parser.test();
 
     return 0;

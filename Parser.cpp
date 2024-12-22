@@ -20,15 +20,10 @@ public:
     }
 
     void test() {
-        ExpressionTree* result2 = add();
-        cout << result2->getpos().first << endl;
-        cout << result2->getpos().second << endl;
-        ExpressionTree* child1 = result2->getchild(0);
-        cout << child1->getpos().first << endl;
-        cout << child1->getpos().second << endl;
-        ExpressionTree* child2 = result2->getchild(1);
-        cout << child2->getpos().first << endl;
-        cout << child2->getpos().second << endl;
+        ExpressionTree* result = logicadd();
+        cout << result->getchild(0)->getValue().first->i << endl;
+        cout << result->getchild(1)->getValue().first->i << endl;
+        cout << result->getValue().first->i << endl;
     }
 private:
     string code;
@@ -74,18 +69,23 @@ private:
         return nullptr;
     }
 
-    ExpressionTree* minus() {
+    ExpressionTree* unary() {
         int current_pos = pos;
         if(is_kanji("負")) {
             one_kanji("負");
             ExpressionTree* exp = factor();
             return new UnaryOperator("負", exp, gyosu, current_pos);
         }
+        else if(is_kanji("不")) {
+            one_kanji("不");
+            ExpressionTree* exp = factor();
+            return new UnaryOperator("不", exp, gyosu, current_pos);
+        }
         return factor();
     }
 
     ExpressionTree* power() {
-        ExpressionTree* left = minus();
+        ExpressionTree* left = unary();
         if(is_kanji("乗")) {
             int current_pos = pos;
             one_kanji("乗");
@@ -140,6 +140,66 @@ private:
                 right = multi();
                 left = new BinaryOperator("引", left, right, gyosu, current_pos);
             }
+        }
+
+        return left;
+    }
+
+    ExpressionTree* comp() {
+        ExpressionTree* left = add();
+        ExpressionTree* right;
+        while(is_kanji("等") || is_kanji("大") || is_kanji("小") || is_kanji("違")) {
+            int current_pos = pos;
+
+            if(is_kanji("等")) {
+                one_kanji("等");
+                right = add();
+                left = new BinaryOperator("等", left, right, gyosu, current_pos);
+            }
+
+            else if(is_kanji("大")) {
+                one_kanji("大");
+                right = add();
+                left = new BinaryOperator("大", left, right, gyosu, current_pos);
+            }
+
+            else if(is_kanji("小")) {
+                one_kanji("小");
+                right = add();
+                left = new BinaryOperator("小", left, right, gyosu, current_pos);
+            }
+
+            else if(is_kanji("違")) {
+                one_kanji("違");
+                right = add();
+                left = new BinaryOperator("違", left, right, gyosu, current_pos);
+            }
+        }
+
+        return left;
+    }
+
+    ExpressionTree* logicmulti() {
+        ExpressionTree* left = comp();
+        ExpressionTree* right;
+        while(is_kanji("且")) {
+            int current_pos = pos;
+            one_kanji("且");
+            right = comp();
+            left = new BinaryOperator("且", left, right, gyosu, current_pos);
+        }
+
+        return left;
+    }
+
+    ExpressionTree* logicadd() {
+        ExpressionTree* left = logicmulti();
+        ExpressionTree* right;
+        while(is_kanji("或")) {
+            int current_pos = pos;
+            one_kanji("或");
+            right = logicmulti();
+            left = new BinaryOperator("或", left, right, gyosu, current_pos);
         }
 
         return left;

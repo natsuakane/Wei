@@ -1,5 +1,6 @@
 #pragma once
 #include<algorithm>
+#include"Value.cpp"
 using namespace std;
 
 class ExpressionTree {
@@ -9,6 +10,8 @@ public:
     }
     virtual ExpressionTree *getchild(int i) = 0;
     virtual ~ExpressionTree() = default;
+    virtual pair<Value*, string> getValue() = 0;
+
 protected:
     int collum, pos;
 };

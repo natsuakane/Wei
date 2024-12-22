@@ -1,5 +1,6 @@
 #pragma once
 #include<string>
+#include<cmath>
 #include"ExpressionTree.cpp"
 #include"Exceptions.cpp"
 using namespace std;
@@ -20,6 +21,93 @@ public:
         if(i == 0) return exp1;
         if(i == 1) return exp2;
         throw runtime_error(type_has_no_children(collum, pos, i, "二項演算子"));
+    }
+    pair<Value*, string> getValue() {
+        if(op == "乗") {
+            pair<Value*, string> v1 = exp1->getValue();
+            pair<Value*, string> v2 = exp2->getValue();
+            if(v1.second == "integer") {
+                return pair<Value*, string>(new Value((long)pow(v1.first->i, v2.first->i)), "integer");
+            }
+        }
+        else if(op == "掛") {
+            pair<Value*, string> v1 = exp1->getValue();
+            pair<Value*, string> v2 = exp2->getValue();
+            if(v1.second == "integer") {
+                return pair<Value*, string>(new Value(v1.first->i * v2.first->i), "integer");
+            }
+        }
+        else if(op == "割") {
+            pair<Value*, string> v1 = exp1->getValue();
+            pair<Value*, string> v2 = exp2->getValue();
+            if(v1.second == "integer") {
+                return pair<Value*, string>(new Value(v1.first->i / v2.first->i), "integer");
+            }
+        }
+        else if(op == "余") {
+            pair<Value*, string> v1 = exp1->getValue();
+            pair<Value*, string> v2 = exp2->getValue();
+            if(v1.second == "integer") {
+                return pair<Value*, string>(new Value(v1.first->i % v2.first->i), "integer");
+            }
+        }
+        else if(op == "足") {
+            pair<Value*, string> v1 = exp1->getValue();
+            pair<Value*, string> v2 = exp2->getValue();
+            if(v1.second == "integer") {
+                return pair<Value*, string>(new Value(v1.first->i + v2.first->i), "integer");
+            }
+        }
+        else if(op == "引") {
+            pair<Value*, string> v1 = exp1->getValue();
+            pair<Value*, string> v2 = exp2->getValue();
+            if(v1.second == "integer") {
+                return pair<Value*, string>(new Value(v1.first->i - v2.first->i), "integer");
+            }
+        }
+        else if(op == "等") {
+            pair<Value*, string> v1 = exp1->getValue();
+            pair<Value*, string> v2 = exp2->getValue();
+            if(v1.second == "integer") {
+                return pair<Value*, string>(new Value((long)(v1.first->i == v2.first->i)), "integer");
+            }
+        }
+        else if(op == "大") {
+            pair<Value*, string> v1 = exp1->getValue();
+            pair<Value*, string> v2 = exp2->getValue();
+            if(v1.second == "integer") {
+                return pair<Value*, string>(new Value((long)(v1.first->i > v2.first->i)), "integer");
+            }
+        }
+        else if(op == "小") {
+            pair<Value*, string> v1 = exp1->getValue();
+            pair<Value*, string> v2 = exp2->getValue();
+            if(v1.second == "integer") {
+                return pair<Value*, string>(new Value((long)(v1.first->i < v2.first->i)), "integer");
+            }
+        }
+        else if(op == "違") {
+            pair<Value*, string> v1 = exp1->getValue();
+            pair<Value*, string> v2 = exp2->getValue();
+            if(v1.second == "integer") {
+                return pair<Value*, string>(new Value((long)(v1.first->i != v2.first->i)), "integer");
+            }
+        }
+        else if(op == "且") {
+            pair<Value*, string> v1 = exp1->getValue();
+            pair<Value*, string> v2 = exp2->getValue();
+            if(v1.second == "integer") {
+                return pair<Value*, string>(new Value((long)(v1.first->i && v2.first->i)), "integer");
+            }
+        }
+        else if(op == "或") {
+            pair<Value*, string> v1 = exp1->getValue();
+            pair<Value*, string> v2 = exp2->getValue();
+            if(v1.second == "integer") {
+                return pair<Value*, string>(new Value((long)(v1.first->i || v2.first->i)), "integer");
+            }
+        }
+        return pair<Value*, string>(nullptr, "");
     }
 private:
     string op;

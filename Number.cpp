@@ -2,11 +2,12 @@
 #include"ExpressionTree.cpp"
 #include"Exceptions.cpp"
 #include <stdexcept>
+#include"Value.cpp"
 using namespace std;
 
 class Number : public ExpressionTree {
 public:
-    Number(int num, int c, int p) {
+    Number(long num, int c, int p) {
         number = num;
         collum = c;
         pos = p;
@@ -17,6 +18,9 @@ public:
     ExpressionTree* getchild(int i) {
         throw runtime_error(type_has_no_children(collum, pos, i, "数"));
     }
+    pair<Value*, string> getValue() {
+        return pair<Value*, string>(new Value(number), "integer");
+    }
 private:
-    int number;
+    long number;
 };
