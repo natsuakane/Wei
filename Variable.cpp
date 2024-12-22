@@ -2,11 +2,12 @@
 #include<string>
 #include"ExpressionTree.cpp"
 #include"Exceptions.cpp"
+#include"Environment.cpp"
 using namespace std;
 
-class Identifier : public ExpressionTree {
+class Variable : public ExpressionTree {
 public:
-    Identifier(string n, int c, int p) {
+    Variable(string n, int c, int p) {
         name = n;
         collum = c;
         pos = p;
@@ -18,7 +19,10 @@ public:
         throw runtime_error(type_has_no_children(collum, pos, i, "識別子"));
     }
     pair<Value*, string> getValue() {
-        return pair<Value*, string>(new Value(0l), "???");
+        return Environments::getvalue(name);
+    }
+    string getname() {
+        return name;
     }
 private:
     string name;

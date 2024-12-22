@@ -5,7 +5,7 @@
 #include "Exceptions.cpp"
 #include "ExpressionTree.cpp"
 #include "Number.cpp"
-#include "Identifier.cpp"
+#include "Variable.cpp"
 #include "UnaryOperator.cpp"
 #include "BinaryOperator.cpp"
 #include "convert_num.cpp"
@@ -64,7 +64,7 @@ private:
                 pos += 3;
             }
             one_kanji("」");
-            return new Identifier(varname, gyosu, current_pos);
+            return new Variable(varname, gyosu, current_pos);
         }
         return nullptr;
     }
@@ -204,4 +204,17 @@ private:
 
         return left;
     }
+
+    ExpressionTree* assign() {
+        ExpressionTree* left = logicadd();
+        if(is_kanji("是")) {
+            int current_pos = pos;
+            one_kanji("是");
+            ExpressionTree* right = assign();
+            return new BinaryOperator("是", left, right, gyosu, current_pos);
+        }
+        return left;
+    }
+
+
 };
