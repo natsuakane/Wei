@@ -38,4 +38,6 @@ public:
     }
 
     Environments() = delete;
-}
+};
+
+vector<Environment*> Environments::environments;

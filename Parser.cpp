@@ -8,6 +8,7 @@
 #include "Variable.cpp"
 #include "UnaryOperator.cpp"
 #include "BinaryOperator.cpp"
+#include "Block.cpp"
 #include "convert_num.cpp"
 using namespace std;
 
@@ -20,9 +21,7 @@ public:
     }
 
     void test() {
-        ExpressionTree* result = logicadd();
-        cout << result->getchild(0)->getValue().first->i << endl;
-        cout << result->getchild(1)->getValue().first->i << endl;
+        ExpressionTree* result = Code();
         cout << result->getValue().first->i << endl;
     }
 private:
@@ -44,6 +43,19 @@ private:
 
     bool isnumber(string s) {
         return containspos(numlist1, s) != -1 || containspos(numlist2, s) != -1 || containspos(numlist3, s) != -1;
+    }
+
+    bool isend() {
+        return pos == code.size();
+    }
+
+    void skipspace() {
+        while(is_kanji("　") || code[pos] == ' ' || code[pos] == '\t' || code[pos] == '\n' || code[pos] == '\r') {
+            if(is_kanji("　")) {
+                one_kanji("　");
+            }
+            if(code[pos] == ' ' || code[pos] == '\t' || code[pos] == '\n' || code[pos] == '\r') pos++;
+        }
     }
 
     ExpressionTree* factor() {
@@ -216,5 +228,13 @@ private:
         return left;
     }
 
-
+    ExpressionTree* Code() {
+        vector<ExpressionTree*> programs;
+        int current_pos = pos;
+        while(!isend()) {
+            programs.push_back(assign());
+            skipspace();
+        }
+        return new Block(programs, gyosu, current_pos);
+    }
 };
