@@ -19,7 +19,7 @@ public:
         throw runtime_error(type_has_no_children(collum, pos, i, "識別子"));
     }
     pair<Value*, string> getValue() {
-        return Environments::getvalue(name);
+        return Environments::getvalue(name, collum, pos);
     }
     string getname() {
         return name;

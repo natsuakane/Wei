@@ -1,5 +1,6 @@
 #include <exception>
 #include<iostream>
+#include <stdexcept>
 #include<vector>
 #include<string>
 #include "Exceptions.cpp"
@@ -9,6 +10,7 @@
 #include "UnaryOperator.cpp"
 #include "BinaryOperator.cpp"
 #include "Block.cpp"
+#include "DecFunc.cpp"
 #include "convert_num.cpp"
 using namespace std;
 
@@ -22,7 +24,7 @@ public:
 
     void test() {
         ExpressionTree* result = Code();
-        cout << result->getValue().first->i << endl;
+        cout << result->getValue().first->fun << endl;
     }
 private:
     string code;
@@ -54,7 +56,19 @@ private:
             if(is_kanji("　")) {
                 one_kanji("　");
             }
-            if(code[pos] == ' ' || code[pos] == '\t' || code[pos] == '\n' || code[pos] == '\r') pos++;
+            if(code[pos] == ' ' || code[pos] == '\t' || code[pos] == '\r') pos++;
+            if(code[pos] == '\n') {
+                pos = 0;
+                gyosu++;
+            }
+        }
+    }
+
+    string getname(ExpressionTree* v) {
+        try {
+            return ((Variable*)v)->getname();
+        } catch(exception a) {
+            throw runtime_error(is_not_variable(gyosu, pos));
         }
     }
 
@@ -228,11 +242,43 @@ private:
         return left;
     }
 
+    ExpressionTree* statement() {
+        if(is_kanji("関")) {
+            int current_pos = pos;
+            one_kanji("関"); one_kanji("数");
+            ExpressionTree* name = factor();
+            one_kanji("引"); one_kanji("数");
+            vector<ExpressionTree*> args;
+            while(!is_kanji("行")) {
+                args.push_back(factor());
+            }
+            ExpressionTree* code = block();
+            vector<string> string_args;
+            for(ExpressionTree* arg : args) string_args.push_back(getname(arg));
+            return new DecFunc(getname(name), string_args, code, gyosu, pos);
+        }
+
+        return assign();
+    }
+
+    ExpressionTree* block() {
+        one_kanji("行");
+        skipspace();
+        vector<ExpressionTree*> programs;
+        int current_pos = pos;
+        while(!is_kanji("終")) {
+            programs.push_back(statement());
+            skipspace();
+        }
+        one_kanji("終");
+        return new Block(programs, gyosu, current_pos);
+    }
+
     ExpressionTree* Code() {
         vector<ExpressionTree*> programs;
         int current_pos = pos;
         while(!isend()) {
-            programs.push_back(assign());
+            programs.push_back(statement());
             skipspace();
         }
         return new Block(programs, gyosu, current_pos);

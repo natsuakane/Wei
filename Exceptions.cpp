@@ -14,3 +14,11 @@ string type_has_no_children(int gyosu, int pos, int n, string type) {
 string invalid_type_assign(int gyosu, int pos) {
     return "誤！"+tokansuji(gyosu)+"行目"+tokansuji(pos)+"文字目左項不是変数！";
 }
+
+string is_not_variable(int gyosu, int pos) {
+    return "誤！"+tokansuji(gyosu)+"行目"+tokansuji(pos)+"文字目此不変数！";
+}
+
+string unknown_variable(int gyosu, int pos, string var) {
+    return "誤！"+tokansuji(gyosu)+"行目"+tokansuji(pos)+"文字目変数「"+var+"」未定義！";
+}

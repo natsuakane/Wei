@@ -6,8 +6,9 @@
 int main() {
     Environments::pushEnvironment();
     // "五足二乗四乗二等六万五千五百四十一且一違二 三十"
-    Parser parser("「亜」是三十　「伊」是「亜」足三十五 「伊」掛「亜」");
+    Parser parser("関数「亜」引数「伊」「宇」行 「伊」足「宇」　終");
     parser.test();
+    cout << Environments::getvalue("江", 0, 0).second << endl;
 
     return 0;
 }
