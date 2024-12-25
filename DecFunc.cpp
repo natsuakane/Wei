@@ -24,7 +24,7 @@ public:
         throw runtime_error(type_has_no_children(collum, pos, i, "関数"));
     }
     pair<Value*, string> getValue() {
-        Environments::setfunc(name, new Func(args, code));
+        Environments::setvar(name, pair<Value*, string>(new Value(new Func(args, code)), "function"));
         return pair<Value*, string>(new Value(new Func(args, code)), "function");
     }
 private:

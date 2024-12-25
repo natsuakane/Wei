@@ -11,6 +11,7 @@
 #include "BinaryOperator.cpp"
 #include "Block.cpp"
 #include "DecFunc.cpp"
+#include "CallFunc.cpp"
 #include "convert_num.cpp"
 using namespace std;
 
@@ -24,7 +25,7 @@ public:
 
     void test() {
         ExpressionTree* result = Code();
-        cout << result->getValue().first->fun << endl;
+        cout << result->getValue().first->i << endl;
     }
 private:
     string code;
@@ -58,7 +59,7 @@ private:
             }
             if(code[pos] == ' ' || code[pos] == '\t' || code[pos] == '\r') pos++;
             if(code[pos] == '\n') {
-                pos = 0;
+                pos++;
                 gyosu++;
             }
         }
@@ -90,7 +91,11 @@ private:
                 pos += 3;
             }
             one_kanji("」");
-            return new Variable(varname, gyosu, current_pos);
+
+            if(!is_kanji("（")) return new Variable(varname, gyosu, current_pos);
+
+            vector<ExpressionTree*> parameters = params();
+            return new CallFunc(varname, parameters, gyosu, pos);
         }
         return nullptr;
     }
@@ -272,6 +277,17 @@ private:
         }
         one_kanji("終");
         return new Block(programs, gyosu, current_pos);
+    }
+
+    vector<ExpressionTree*> params() {
+        vector<ExpressionTree*> parameters;
+        one_kanji("（");
+        while(!is_kanji("）")) {
+            parameters.push_back(assign());
+            skipspace();
+        }
+        one_kanji("）");
+        return parameters;
     }
 
     ExpressionTree* Code() {

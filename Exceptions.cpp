@@ -1,7 +1,16 @@
 #pragma once
 #include<string>
+#include<unordered_map>
 #include"convert_num.cpp"
 using namespace std;
+
+unordered_map<string, string> types = {
+    {"integer", "整数"},
+    {"float", "小数"},
+    {"string", "文字列"},
+    {"array", "配列"},
+    {"function", "関数"}
+};
 
 string invalid_kanji(int gyosu, int pos, string invalid, string t) {
     return "誤！"+tokansuji(gyosu)+"行目"+tokansuji(pos)+"文字目不正漢字「"+invalid+"」正漢字「"+t+"」！";
@@ -21,4 +30,12 @@ string is_not_variable(int gyosu, int pos) {
 
 string unknown_variable(int gyosu, int pos, string var) {
     return "誤！"+tokansuji(gyosu)+"行目"+tokansuji(pos)+"文字目変数「"+var+"」未定義！";
+}
+
+string not_match_argments(int gyosu, int pos) {
+    return "誤！"+tokansuji(gyosu)+"行目"+tokansuji(pos)+"文字目不正引数発生！";
+}
+
+string invalid_type(int gyosu, int pos, string c, string w) {
+    return "誤！"+tokansuji(gyosu)+"行目"+tokansuji(pos)+"文字目不正型「"+types[w]+"」正型「"+types[c]+"」！";
 }
