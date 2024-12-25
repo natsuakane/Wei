@@ -12,6 +12,7 @@
 #include "Block.cpp"
 #include "DecFunc.cpp"
 #include "CallFunc.cpp"
+#include "String.cpp"
 #include "convert_num.cpp"
 using namespace std;
 
@@ -93,6 +94,17 @@ private:
             one_kanji("」");
 
             return new Variable(varname, gyosu, current_pos);
+        }
+        else if(is_kanji("『")) {
+            one_kanji("『");
+            string value = "";
+            while(!is_kanji("』")) {
+                value += code.substr(pos, 3);
+                pos+= 3;
+            }
+            one_kanji("』");
+
+            return new String(value, gyosu, pos);
         }
         return nullptr;
     }

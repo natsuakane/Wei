@@ -20,7 +20,7 @@ union Value {
 public:
     long i;
     double f;
-    string s();
+    string* s;
     vector<pair<Value, string> > a();
     Func* fun;
 
@@ -30,8 +30,8 @@ public:
     Value(double v) {
         f = v;
     }
-    Value(string v) {
-        s() = v;
+    Value(string* v) {
+        s = v;
     }
     Value(vector<pair<Value, string> > v) {
         a() = v;
