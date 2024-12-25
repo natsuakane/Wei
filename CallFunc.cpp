@@ -10,8 +10,8 @@ using namespace std;
 
 class CallFunc : public ExpressionTree {
 public:
-    CallFunc(string n, vector<ExpressionTree*> a, int c, int p) {
-        name = n;
+    CallFunc(ExpressionTree* f, vector<ExpressionTree*> a, int c, int p) {
+        functree = f;
         args = a;
         collum = c;
         pos = p;
@@ -23,7 +23,7 @@ public:
         throw runtime_error(type_has_no_children(collum, pos, i, "関数"));
     }
     pair<Value*, string> getValue() {
-        pair<Value*, string> f = Environments::getvalue(name, collum, pos);
+        pair<Value*, string> f = functree->getValue();
         if(f.second != "function") throw runtime_error(invalid_type(collum, pos, "function", f.second));
         Func* func = f.first->fun;
 
@@ -37,6 +37,6 @@ public:
         return result;
     }
 private:
-    string name;
+    ExpressionTree* functree;
     vector<ExpressionTree*> args;
 };

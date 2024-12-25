@@ -92,27 +92,34 @@ private:
             }
             one_kanji("」");
 
-            if(!is_kanji("（")) return new Variable(varname, gyosu, current_pos);
-
-            vector<ExpressionTree*> parameters = params();
-            return new CallFunc(varname, parameters, gyosu, pos);
+            return new Variable(varname, gyosu, current_pos);
         }
         return nullptr;
+    }
+
+    ExpressionTree* funcall() {
+        int current_pos = pos;
+        ExpressionTree* fun = factor();
+        if(is_kanji("（")) {
+            vector<ExpressionTree*> param = params();
+            return new CallFunc(fun, param, gyosu, pos);
+        }
+        return fun;
     }
 
     ExpressionTree* unary() {
         int current_pos = pos;
         if(is_kanji("負")) {
             one_kanji("負");
-            ExpressionTree* exp = factor();
+            ExpressionTree* exp = funcall();
             return new UnaryOperator("負", exp, gyosu, current_pos);
         }
         else if(is_kanji("不")) {
             one_kanji("不");
-            ExpressionTree* exp = factor();
+            ExpressionTree* exp = funcall();
             return new UnaryOperator("不", exp, gyosu, current_pos);
         }
-        return factor();
+        return funcall();
     }
 
     ExpressionTree* power() {
