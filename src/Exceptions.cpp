@@ -39,3 +39,7 @@ string not_match_argments(int gyosu, int pos) {
 string invalid_type(int gyosu, int pos, string c, string w) {
     return "誤！"+tokansuji(gyosu)+"行目"+tokansuji(pos)+"文字目不正型「"+types[w]+"」正型「"+types[c]+"」！";
 }
+
+string index_out_of_range(int gyosu, int pos) {
+    return "誤！"+tokansuji(gyosu)+"行目"+tokansuji(pos)+"文字目此指定配列外！";
+}

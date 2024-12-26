@@ -13,6 +13,7 @@
 #include "DecFunc.cpp"
 #include "CallFunc.cpp"
 #include "String.cpp"
+#include "Array.cpp"
 #include "Index.cpp"
 #include "convert_num.cpp"
 using namespace std;
@@ -29,7 +30,7 @@ public:
         ExpressionTree* result = Code();
         pair<Value*, string> v = result->getValue();
         cout << v.second << endl;
-        cout << (*(v.first->s)) << endl;
+        cout << v.first->i << endl;
     }
 private:
     string code;
@@ -108,6 +109,17 @@ private:
             one_kanji("』");
 
             return new String(value, gyosu, pos);
+        }
+        else if(is_kanji("《")) {
+            one_kanji("《");
+            vector<ExpressionTree*> array;
+            while(!is_kanji("》")) {
+                array.push_back(assign());
+                skipspace();
+            }
+            one_kanji("》");
+
+            return new Array(array, gyosu, pos);
         }
         return nullptr;
     }
