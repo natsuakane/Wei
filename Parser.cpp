@@ -13,6 +13,7 @@
 #include "DecFunc.cpp"
 #include "CallFunc.cpp"
 #include "String.cpp"
+#include "Index.cpp"
 #include "convert_num.cpp"
 using namespace std;
 
@@ -26,7 +27,9 @@ public:
 
     void test() {
         ExpressionTree* result = Code();
-        cout << result->getValue().first->i << endl;
+        pair<Value*, string> v = result->getValue();
+        cout << v.second << endl;
+        cout << (*(v.first->s)) << endl;
     }
 private:
     string code;
@@ -109,9 +112,21 @@ private:
         return nullptr;
     }
 
+    ExpressionTree* index() {
+        int current_pos = pos;
+        ExpressionTree* arrayn = factor();
+        if(is_kanji("《")) {
+            one_kanji("《");
+            ExpressionTree* id = assign();
+            one_kanji("》");
+            return new Index(arrayn, id, gyosu, pos);
+        }
+        return arrayn;
+    }
+
     ExpressionTree* funcall() {
         int current_pos = pos;
-        ExpressionTree* fun = factor();
+        ExpressionTree* fun = index();
         if(is_kanji("（")) {
             vector<ExpressionTree*> param = params();
             return new CallFunc(fun, param, gyosu, pos);

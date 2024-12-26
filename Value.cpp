@@ -1,6 +1,7 @@
 #pragma once
 #include<vector>
 #include<string>
+#include<iostream>
 #include"ExpressionTree.cpp"
 using namespace std;
 
@@ -21,7 +22,7 @@ public:
     long i;
     double f;
     string* s;
-    vector<pair<Value, string> > a();
+    vector<pair<Value, string> >* a;
     Func* fun;
 
     Value(long v) {
@@ -33,8 +34,8 @@ public:
     Value(string* v) {
         s = v;
     }
-    Value(vector<pair<Value, string> > v) {
-        a() = v;
+    Value(vector<pair<Value, string> >* v) {
+        a = v;
     }
     Value(Func* f) {
         fun = f;
