@@ -7,6 +7,7 @@ using namespace std;
 unordered_map<string, string> types = {
     {"integer", "整数"},
     {"float", "小数"},
+    {"number", "数"},
     {"string", "文字列"},
     {"array", "配列"},
     {"function", "関数"}
