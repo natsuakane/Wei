@@ -16,6 +16,7 @@
 #include "String.cpp"
 #include "Array.cpp"
 #include "Index.cpp"
+#include "If.cpp"
 #include "convert_num.cpp"
 using namespace std;
 
@@ -32,7 +33,7 @@ public:
         pair<Value*, string> v = result->getValue();
         cout << v.second << endl;
         //cout << *v.first->s << endl;
-        cout << *(v.first->s) << endl;
+        cout << (v.first->i) << endl;
     }
 private:
     string code;
@@ -314,7 +315,32 @@ private:
             return new DecFunc(getname(name), string_args, code, gyosu, pos);
         }
 
-        return assign();
+        ExpressionTree* exp = assign();
+        if(is_kanji("場")) {
+            int current_pos = pos;
+            one_kanji("場"); one_kanji("合");
+            ExpressionTree* code;
+            if(!is_kanji("行")) {
+                skipspace();
+                code = statement();
+            }
+            else code = block();
+            skipspace();
+
+            if(is_kanji("其")) {
+                one_kanji("其"); one_kanji("他");
+                ExpressionTree* fcode;
+                if(!is_kanji("行")) {
+                    skipspace();
+                    fcode = statement();
+                }
+                else fcode = block();
+                return new If(exp, code, fcode, gyosu, pos);
+            }
+            return new If(exp, code, nullptr, gyosu, pos);
+        }
+
+        return exp;
     }
 
     ExpressionTree* block() {
