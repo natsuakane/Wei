@@ -6,6 +6,7 @@
 #include "Exceptions.cpp"
 #include "ExpressionTree.cpp"
 #include "Number.cpp"
+#include "FloatNumber.cpp"
 #include "Variable.cpp"
 #include "UnaryOperator.cpp"
 #include "BinaryOperator.cpp"
@@ -30,7 +31,8 @@ public:
         ExpressionTree* result = Code();
         pair<Value*, string> v = result->getValue();
         cout << v.second << endl;
-        cout << v.first->i << endl;
+        //cout << *v.first->s << endl;
+        cout << v.first->f << endl;
     }
 private:
     string code;
@@ -82,10 +84,13 @@ private:
         string nextmoji = code.substr(pos, 3);
         int current_pos = pos;
         if(isnumber(nextmoji)) {
+            bool isfloat = false;
             int tmppos = pos;
-            while(isnumber(code.substr(pos, 3))) {
+            while(isnumber(code.substr(pos, 3)) || code.substr(pos, 3) == "点") {
+                if(code.substr(pos, 3) == "点") isfloat = true;
                 pos+=3;
             }
+            if(isfloat) return new FloatNumber(toshosu(code.substr(tmppos, pos-tmppos)), gyosu, current_pos);
             return new Number(tosuji(code.substr(tmppos, pos-tmppos)), gyosu, current_pos);
         }
         else if(is_kanji("「")) {

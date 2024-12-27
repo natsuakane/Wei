@@ -6,6 +6,7 @@ using namespace std;
 vector<string> numlist1 = {"零", "一", "二", "三", "四", "五", "六", "七", "八", "九"};
 vector<string> numlist2 = {"", "十", "百", "千"};
 vector<string> numlist3 = {"", "万", "億", "兆", "京", "垓", "秭", "負"};
+
 std::string tokansuji(long n) {
     std::string ans = "";
     bool less0 = false;
@@ -48,6 +49,48 @@ long tosuji(string s) {
     int n = 0;
     for(int i = 0; i < s.size(); i+=3) {
         string moji = s.substr(i, 3);
+        if(containspos(numlist1, moji) != -1) {
+            int num = containspos(numlist1, moji);
+            string moji2 = s.substr(i+3, 3);
+            if(containspos(numlist2, moji2) != -1) {
+                int keta1 = containspos(numlist2, moji2);
+                n += num * (int)std::pow(10, keta1);
+            }
+            else n += num;
+        }
+        if(containspos(numlist3, moji) != -1) {
+            int keta4 = containspos(numlist3, moji);
+            result += n * (int)std::pow(10000, keta4);
+            n = 0;
+        }
+    }
+    result += n;
+
+    if(isminus) result *= -1;
+
+    return result;
+}
+
+double toshosu(string s) {
+    bool isminus = false;
+    if(s[0] == '\350' && s[1] == '\262' && s[2] == '\240') {
+        s = s.substr(3, s.size()-3);
+        isminus = true;
+    }
+    double result = 0;
+    int n = 0;
+    int ketabelow0 = 0;
+    for(int i = 0; i < s.size(); i+=3) {
+        string moji = s.substr(i, 3);
+
+        if(ketabelow0) {
+            int num = containspos(numlist1, moji);
+            result += num/pow(10, ketabelow0);
+            ketabelow0++;
+            continue;
+        }
+        if(moji == "点") ketabelow0 = 1;
+
         if(containspos(numlist1, moji) != -1) {
             int num = containspos(numlist1, moji);
             string moji2 = s.substr(i+3, 3);
