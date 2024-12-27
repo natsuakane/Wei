@@ -32,7 +32,7 @@ public:
         pair<Value*, string> v = result->getValue();
         cout << v.second << endl;
         //cout << *v.first->s << endl;
-        cout << v.first->f << endl;
+        cout << *(v.first->s) << endl;
     }
 private:
     string code;

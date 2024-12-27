@@ -31,9 +31,9 @@ pair<Value*, string> UnaryOperator::getValue() {
         if(v.second == "integer") {
             return pair<Value*, string>(new Value(-1 * v.first->i), "integer");
         }
-        //else if(v.second == "float") {
-        //    return pair<Value*, string>(new Value(-1 * v.first->f), "float");
-        //}
+        else if(v.second == "float") {
+            return pair<Value*, string>(new Value(-1 * v.first->f), "float");
+        }
     }
     if(op == "不") {
         pair<Value*, string> v = exp->getValue();

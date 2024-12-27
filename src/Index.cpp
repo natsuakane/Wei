@@ -41,6 +41,20 @@ public:
 
         return result;
     }
+    void assign(pair<Value*, string> value) {
+        pair<Value*, string> a = array->getValue();
+        if(a.second != "array" && a.second != "string") throw runtime_error(invalid_type(collum, pos, "array", a.second));
+        pair<Value*, string> i = id->getValue();
+
+        if(a.second == "array") {
+            (*(a.first->a))[i.first->i] = value;
+        }
+        else if(a.second == "string") {
+            (*(a.first->s))[i.first->i*3] = (*value.first->s)[0];
+            (*(a.first->s))[i.first->i*3+1] = (*value.first->s)[1];
+            (*(a.first->s))[i.first->i*3+2] = (*value.first->s)[2];
+        }
+    }
 private:
     ExpressionTree* array;
     ExpressionTree* id;

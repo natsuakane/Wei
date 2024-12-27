@@ -6,6 +6,7 @@
 #include"ExpressionTree.cpp"
 #include"Exceptions.cpp"
 #include"Variable.cpp"
+#include"Index.cpp"
 #include"Environment.cpp"
 #include"Exceptions.cpp"
 using namespace std;
@@ -178,12 +179,25 @@ pair<Value*, string> BinaryOperator::getValue() {
         throw runtime_error(invalid_type(collum, pos, "integer", "type"));
     }
     else if(op == "是") {
-        try {
-            string name = ((Variable *)exp1)->getname();
-            Environments::setvar(name, exp2->getValue());
-            return exp2->getValue();
+        // dynamic_cast を使い、キャスト成功を確認
+        Variable* var = dynamic_cast<Variable*>(exp1);
+        if (var) {
+            string name = var->getname();
+            pair<Value*, string> result = exp2->getValue();
+            Environments::setvar(name, result);
+            return result;
         }
-        catch(exception e) { throw runtime_error(invalid_type_assign(collum, pos)); }
+
+        // Variable へのキャストが失敗した場合
+        Index* index = dynamic_cast<Index*>(exp1);
+        if (index) {
+            pair<Value*, string> result = exp2->getValue();
+            index->assign(result);
+            return result;
+        }
+
+        // 両方のキャストが失敗した場合
+        throw runtime_error(invalid_type_assign(collum, pos));
     }
     throw runtime_error(invalid_type(collum, pos, "number", exp1->getValue().second));
 }
