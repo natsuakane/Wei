@@ -17,6 +17,7 @@
 #include "Array.cpp"
 #include "Index.cpp"
 #include "If.cpp"
+#include "While.cpp"
 #include "convert_num.cpp"
 using namespace std;
 
@@ -312,7 +313,7 @@ private:
             ExpressionTree* code = block();
             vector<string> string_args;
             for(ExpressionTree* arg : args) string_args.push_back(getname(arg));
-            return new DecFunc(getname(name), string_args, code, gyosu, pos);
+            return new DecFunc(getname(name), string_args, code, gyosu, current_pos);
         }
 
         ExpressionTree* exp = assign();
@@ -335,9 +336,22 @@ private:
                     fcode = statement();
                 }
                 else fcode = block();
-                return new If(exp, code, fcode, gyosu, pos);
+                return new If(exp, code, fcode, gyosu, current_pos);
             }
             return new If(exp, code, nullptr, gyosu, pos);
+        }
+
+        if(is_kanji("間")) {
+            int current_pos = pos;
+            one_kanji("間"); one_kanji("繰"); one_kanji("返");
+            ExpressionTree* code;
+            if(!is_kanji("行")) {
+                skipspace();
+                code = statement();
+            }
+            else code = block();
+
+            return new While(exp, code, gyosu, current_pos);
         }
 
         return exp;
