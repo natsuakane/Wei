@@ -34,6 +34,9 @@ public:
         //環境準備
         Environments::pushEnvironment();
 
+        //定数
+        Environments::setvar("新行", make_pair(new Value(new string("\n\0\0")), "string"));
+
         //標準ライブラリ関数
         vector<string> args; args.push_back("arg1");
         ExpressionTree* func = new GetLength(gyosu, pos);
@@ -64,6 +67,11 @@ public:
         func = new Copy(gyosu, pos);
         pair<Value*, string> copy = make_pair(new Value(new Func(args, func)), "function");
         Environments::setvar("複製", copy);
+
+        args.clear(); args.push_back("arg1");
+        func = new Input(gyosu, pos);
+        pair<Value*, string> input = make_pair(new Value(new Func(args, func)), "function");
+        Environments::setvar("入力", input);
     }
 
     void test() {

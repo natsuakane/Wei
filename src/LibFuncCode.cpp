@@ -4,6 +4,7 @@
 #include <stdexcept>
 #include"Value.cpp"
 #include"Environment.cpp"
+#include"replaceAll.h"
 using namespace std;
 
 class GetLength : public ExpressionTree {
@@ -115,7 +116,10 @@ public:
         pair<Value*, string> arg1 = Environments::getvalue("arg1", collum, pos);
         if(arg1.second == "integer") cout << arg1.first->i;
         else if(arg1.second == "float") cout << arg1.first->f;
-        else if(arg1.second == "string") cout << *(arg1.first->s);
+        else if(arg1.second == "string") {
+            string msg = *(arg1.first->s);
+            cout << msg;
+        }
         else if(arg1.second == "array") cout << "array(" << arg1.first->a << ")";
         else if(arg1.second == "function") cout << "function(" << arg1.first->fun << ")";
         return arg1;
@@ -151,6 +155,31 @@ public:
             Func* newfun = new Func(arg1.first->fun->args, arg1.first->fun->code);
             return pair<Value*, string>(new Value(newfun), "function");
         }
+        return arg1;
+    }
+private:
+};
+
+class Input : public ExpressionTree {
+public:
+    Input(int c, int p) {
+        collum = c;
+        pos = p;
+    }
+    pair<int, int> getpos() {
+        return pair<int, int>(collum, pos);
+    }
+    ExpressionTree* getchild(int i) {
+        throw runtime_error(type_has_no_children(collum, pos, i, "標準ライブラリ関数"));
+    }
+    pair<Value*, string> getValue() {
+        pair<Value*, string> arg1 = Environments::getvalue("arg1", collum, pos);
+        if(arg1.second != "string") throw runtime_error(invalid_type(collum, pos, "string", arg1.second));
+
+        if(*(arg1.first->s) == "整数") cin >> arg1.first->i;
+        else if(*(arg1.first->s) == "小数") cin >> arg1.first->f;
+        else if(*(arg1.first->s) == "文字列") cin >> *(arg1.first->s);
+        else throw runtime_error(invalid_type(collum, pos, "", *(arg1.first->s)));
         return arg1;
     }
 private:
