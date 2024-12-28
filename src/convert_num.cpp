@@ -55,10 +55,15 @@ long tosuji(string s) {
             if(containspos(numlist2, moji2) != -1) {
                 int keta1 = containspos(numlist2, moji2);
                 n += num * (int)std::pow(10, keta1);
+                i+=3;
             }
             else n += num;
         }
-        if(containspos(numlist3, moji) != -1) {
+        else if(containspos(numlist2, moji) != -1) {
+            int keta1 = containspos(numlist2, moji);
+            n += (int)std::pow(10, keta1);
+        }
+        else if(containspos(numlist3, moji) != -1) {
             int keta4 = containspos(numlist3, moji);
             result += n * (int)std::pow(10000, keta4);
             n = 0;
@@ -100,7 +105,11 @@ double toshosu(string s) {
             }
             else n += num;
         }
-        if(containspos(numlist3, moji) != -1) {
+        else if(containspos(numlist2, moji) != -1) {
+            int keta1 = containspos(numlist2, moji);
+            n += (int)std::pow(10, keta1);
+        }
+        else if(containspos(numlist3, moji) != -1) {
             int keta4 = containspos(numlist3, moji);
             result += n * (int)std::pow(10000, keta4);
             n = 0;
