@@ -18,6 +18,9 @@
 #include "Index.cpp"
 #include "If.cpp"
 #include "While.cpp"
+#include "LibFuncCode.cpp"
+#include "Environment.cpp"
+#include "Value.cpp"
 #include "convert_num.cpp"
 using namespace std;
 
@@ -27,14 +30,45 @@ public:
         this->code = c;
         pos = 0;
         gyosu=1;
+
+        //環境準備
+        Environments::pushEnvironment();
+
+        //標準ライブラリ関数
+        vector<string> args; args.push_back("arg1");
+        ExpressionTree* func = new GetLength(gyosu, pos);
+        pair<Value*, string> getlength = make_pair(new Value(new Func(args, func)), "function");
+        Environments::setvar("長取得", getlength);
+
+        args.clear(); args.push_back("arg1");
+        func = new MakeArray(gyosu, pos);
+        pair<Value*, string> makearray = make_pair(new Value(new Func(args, func)), "function");
+        Environments::setvar("配列生成", makearray);
+
+        args.clear(); args.push_back("arg1");
+        func = new MakeString(gyosu, pos);
+        pair<Value*, string> makestring = make_pair(new Value(new Func(args, func)), "function");
+        Environments::setvar("文字列生成", makestring);
+
+        args.clear(); args.push_back("arg1"); args.push_back("arg2");
+        func = new PushElm(gyosu, pos);
+        pair<Value*, string> pushelm = make_pair(new Value(new Func(args, func)), "function");
+        Environments::setvar("要素追加", pushelm);
+
+        args.clear(); args.push_back("arg1");
+        func = new Print(gyosu, pos);
+        pair<Value*, string> print = make_pair(new Value(new Func(args, func)), "function");
+        Environments::setvar("表示", print);
+
+        args.clear(); args.push_back("arg1");
+        func = new Copy(gyosu, pos);
+        pair<Value*, string> copy = make_pair(new Value(new Func(args, func)), "function");
+        Environments::setvar("複製", copy);
     }
 
     void test() {
         ExpressionTree* result = Code();
         pair<Value*, string> v = result->getValue();
-        cout << v.second << endl;
-        //cout << *v.first->s << endl;
-        cout << (v.first->i) << endl;
     }
 private:
     string code;

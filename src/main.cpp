@@ -18,7 +18,6 @@ int main() {
         std::cout << "Unable to open file\n";
     }
 
-    Environments::pushEnvironment();
     Parser parser(code);
     parser.test();
 
