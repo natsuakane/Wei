@@ -17,7 +17,7 @@ public:
         return pair<int, int>(collum, pos);
     }
     ExpressionTree* getchild(int i) {
-        throw runtime_error(type_has_no_children(collum, pos, i, "数"));
+        throw runtime_error(type_has_no_children(collum, pos, i, "配列"));
     }
     pair<Value*, string> getValue() {
         vector<pair<Value*, string> >* valuearray = new vector<pair<Value*, string> >();

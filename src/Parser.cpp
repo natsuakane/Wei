@@ -15,6 +15,7 @@
 #include "CallFunc.cpp"
 #include "String.cpp"
 #include "Array.cpp"
+#include "Object.cpp"
 #include "Index.cpp"
 #include "If.cpp"
 #include "While.cpp"
@@ -104,11 +105,8 @@ private:
     }
 
     void skipspace() {
-        while(is_kanji("　") || code[pos] == ' ' || code[pos] == '\t' || code[pos] == '\n' || code[pos] == '\r') {
-            if(is_kanji("　")) {
-                one_kanji("　");
-            }
-            if(code[pos] == ' ' || code[pos] == '\t' || code[pos] == '\r') pos++;
+        while(code[pos] == '\t' || code[pos] == '\n' || code[pos] == '\r') {
+            if(code[pos] == '\t' || code[pos] == '\r') pos++;
             if(code[pos] == '\n') {
                 pos++;
                 gyosu++;
@@ -157,19 +155,41 @@ private:
             }
             one_kanji("』");
 
-            return new String(value, gyosu, pos);
+            return new String(value, gyosu, current_pos);
         }
         else if(is_kanji("《")) {
             one_kanji("《");
             vector<ExpressionTree*> array;
             while(!is_kanji("》")) {
                 array.push_back(assign());
-                skipspace();
+                if(is_kanji("、")) one_kanji("、");
+                else break;
             }
             one_kanji("》");
 
-            return new Array(array, gyosu, pos);
+            return new Array(array, gyosu, current_pos);
         }
+        else if(is_kanji("物")) {
+            one_kanji("物"); one_kanji("体"); one_kanji("《");
+            vector<pair<ExpressionTree*, ExpressionTree*> > vars;
+            while(!is_kanji("》")) {
+                ExpressionTree* varname = factor();
+                ExpressionTree* exp = nullptr;
+                skipspace();
+                if(is_kanji("是")) {
+                    one_kanji("是");
+                    skipspace();
+                    ExpressionTree* expression = assign();
+                }
+                vars.push_back(make_pair(varname, exp));
+                if(is_kanji("、")) one_kanji("、");
+                else break;
+            }
+            one_kanji("》");
+
+            return new Object(vars, gyosu, current_pos);
+        }
+
         return nullptr;
     }
 
@@ -364,7 +384,6 @@ private:
             one_kanji("場"); one_kanji("合");
             ExpressionTree* code;
             if(!is_kanji("行")) {
-                skipspace();
                 code = statement();
             }
             else code = block();
@@ -374,7 +393,6 @@ private:
                 one_kanji("其"); one_kanji("他");
                 ExpressionTree* fcode;
                 if(!is_kanji("行")) {
-                    skipspace();
                     fcode = statement();
                 }
                 else fcode = block();
@@ -388,7 +406,6 @@ private:
             one_kanji("間"); one_kanji("繰"); one_kanji("返");
             ExpressionTree* code;
             if(!is_kanji("行")) {
-                skipspace();
                 code = statement();
             }
             else code = block();
@@ -417,13 +434,15 @@ private:
         one_kanji("（");
         while(!is_kanji("）")) {
             parameters.push_back(assign());
-            skipspace();
+            if(is_kanji("、")) one_kanji("、");
+            else break;
         }
         one_kanji("）");
         return parameters;
     }
 
     ExpressionTree* Code() {
+        skipspace();
         vector<ExpressionTree*> programs;
         int current_pos = pos;
         while(!isend()) {

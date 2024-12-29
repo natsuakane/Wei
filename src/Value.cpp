@@ -2,6 +2,7 @@
 #include<vector>
 #include<string>
 #include<iostream>
+#include<unordered_map>
 #include"ExpressionTree.cpp"
 using namespace std;
 
@@ -24,6 +25,7 @@ public:
     string* s;
     vector<pair<Value*, string> >* a;
     Func* fun;
+    unordered_map<string, pair<Value*, string> >* obj;
 
     Value(long v) {
         i = v;
@@ -40,6 +42,9 @@ public:
     Value(Func* f) {
         fun = f;
     }
+    Value(unordered_map<string, pair<Value*, string> >* o) {
+        obj = o;
+    }
     Value(const Value& other, string type) {
         // コピー元の型に応じた処理を行う
         if (type == "string") {
@@ -52,6 +57,8 @@ public:
             i = other.i;
         } else if (type == "float") {
             f = other.f;
+        } else if (type == "object") {
+            obj = new unordered_map<string, pair<Value*, string> >(*other.obj);
         }
     }
 };

@@ -4,7 +4,6 @@
 #include <stdexcept>
 #include"Value.cpp"
 #include"Environment.cpp"
-#include"replaceAll.h"
 using namespace std;
 
 class GetLength : public ExpressionTree {
@@ -176,11 +175,24 @@ public:
         pair<Value*, string> arg1 = Environments::getvalue("arg1", collum, pos);
         if(arg1.second != "string") throw runtime_error(invalid_type(collum, pos, "string", arg1.second));
 
-        if(*(arg1.first->s) == "整数") cin >> arg1.first->i;
-        else if(*(arg1.first->s) == "小数") cin >> arg1.first->f;
-        else if(*(arg1.first->s) == "文字列") cin >> *(arg1.first->s);
+        pair<Value*, string> res;
+        if(*(arg1.first->s) == "整数") {
+            res = make_pair(new Value(0l), "integer");
+            cin >> res.first->i;
+            res.second = "integer";
+        }
+        else if(*(arg1.first->s) == "小数") {
+            res = make_pair(new Value(0.0f), "float");
+            cin >> res.first->f;
+            res.second = "float";
+        }
+        else if(*(arg1.first->s) == "文字列") {
+            res = make_pair(new Value(new string("")), "string");
+            cin >> *(res.first->s);
+            res.second = "string";
+        }
         else throw runtime_error(invalid_type(collum, pos, "", *(arg1.first->s)));
-        return arg1;
+        return res;
     }
 private:
 };
