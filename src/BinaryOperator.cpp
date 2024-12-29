@@ -7,6 +7,7 @@
 #include"Exceptions.cpp"
 #include"Variable.cpp"
 #include"Index.cpp"
+#include"ObjectIndex.cpp"
 #include"Environment.cpp"
 #include"Exceptions.cpp"
 using namespace std;
@@ -193,6 +194,14 @@ pair<Value*, string> BinaryOperator::getValue() {
         if (index) {
             pair<Value*, string> result = exp2->getValue();
             index->assign(result);
+            return result;
+        }
+
+        // Variable へのキャストが失敗した場合
+        ObjectIndex* objindex = dynamic_cast<ObjectIndex*>(exp1);
+        if (objindex) {
+            pair<Value*, string> result = exp2->getValue();
+            objindex->assign(result);
             return result;
         }
 

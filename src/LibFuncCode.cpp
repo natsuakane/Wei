@@ -121,6 +121,7 @@ public:
         }
         else if(arg1.second == "array") cout << "array(" << arg1.first->a << ")";
         else if(arg1.second == "function") cout << "function(" << arg1.first->fun << ")";
+        else if(arg1.second == "object") cout << "object(" << arg1.first->obj << ")";
         return arg1;
     }
 private:
@@ -153,6 +154,14 @@ public:
         else if(arg1.second == "function") {
             Func* newfun = new Func(arg1.first->fun->args, arg1.first->fun->code);
             return pair<Value*, string>(new Value(newfun), "function");
+        }
+        else if(arg1.second == "object") {
+            unordered_map<string, pair<Value*, string> >* newobj =
+                new unordered_map<string, pair<Value*, string> >();
+            for(auto moto : *arg1.first->obj) {
+                (*newobj)[moto.first] = make_pair(new Value(*moto.second.first), moto.second.second);
+            }
+            return pair<Value*, string>(new Value(newobj), "object");
         }
         return arg1;
     }

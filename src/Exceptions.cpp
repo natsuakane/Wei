@@ -10,7 +10,8 @@ unordered_map<string, string> types = {
     {"number", "数"},
     {"string", "文字列"},
     {"array", "配列"},
-    {"function", "関数"}
+    {"function", "関数"},
+    {"object", "物体"}
 };
 
 string invalid_kanji(int gyosu, int pos, string invalid, string t) {

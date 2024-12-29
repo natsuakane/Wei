@@ -39,7 +39,7 @@ public:
 
     void assign(pair<Value*, string> value) {
         pair<Value*, string> obj = object->getValue();
-        if(obj.second != "array") throw runtime_error(invalid_type(collum, pos, "object", obj.second));
+        if(obj.second != "object") throw runtime_error(invalid_type(collum, pos, "object", obj.second));
         Variable* var = dynamic_cast<Variable*>(id);
         if(var) {
             (*(obj.first->obj))[var->getname()] = value;
