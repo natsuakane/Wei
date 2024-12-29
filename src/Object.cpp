@@ -26,11 +26,12 @@ public:
             Variable* var = dynamic_cast<Variable*>(variable.first);
             if(var) {
                 pair<Value*, string> value = make_pair(nullptr, "null");
-                if(variable.second != nullptr) value = variable.second->getValue();
+                if(variable.second != nullptr) {
+                    value = variable.second->getValue();
+                }
                 (*res)[var->getname()] = value;
             }
-
-            throw runtime_error(invalid_type_assign(collum, pos));
+            else throw runtime_error(invalid_type_assign(collum, pos));
         }
 
         return make_pair(new Value(res), "object");

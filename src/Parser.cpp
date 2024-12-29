@@ -17,6 +17,7 @@
 #include "Array.cpp"
 #include "Object.cpp"
 #include "Index.cpp"
+#include "ObjectIndex.cpp"
 #include "If.cpp"
 #include "While.cpp"
 #include "LibFuncCode.cpp"
@@ -179,7 +180,7 @@ private:
                 if(is_kanji("是")) {
                     one_kanji("是");
                     skipspace();
-                    ExpressionTree* expression = assign();
+                    exp = assign();
                 }
                 vars.push_back(make_pair(varname, exp));
                 if(is_kanji("、")) one_kanji("、");
@@ -215,19 +216,32 @@ private:
         return fun;
     }
 
+    ExpressionTree* dot() {
+        ExpressionTree* left = funcall();
+        ExpressionTree* right;
+        while(is_kanji("之")) {
+            one_kanji("之");
+            int current_pos = pos;
+            ExpressionTree* right = funcall();
+            left = new ObjectIndex(left, right, gyosu, current_pos);
+        }
+
+        return left;
+    }
+
     ExpressionTree* unary() {
         int current_pos = pos;
         if(is_kanji("負")) {
             one_kanji("負");
-            ExpressionTree* exp = funcall();
+            ExpressionTree* exp = dot();
             return new UnaryOperator("負", exp, gyosu, current_pos);
         }
         else if(is_kanji("不")) {
             one_kanji("不");
-            ExpressionTree* exp = funcall();
+            ExpressionTree* exp = dot();
             return new UnaryOperator("不", exp, gyosu, current_pos);
         }
-        return funcall();
+        return dot();
     }
 
     ExpressionTree* power() {
