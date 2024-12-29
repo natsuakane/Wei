@@ -190,6 +190,13 @@ private:
 
             return new Object(vars, gyosu, current_pos);
         }
+        else if(is_kanji("（")) {
+            one_kanji("（");
+            ExpressionTree* exp = assign();
+            one_kanji("）");
+
+            return exp;
+        }
 
         return nullptr;
     }
