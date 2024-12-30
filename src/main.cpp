@@ -5,7 +5,7 @@
 #include"Environment.cpp"
 using namespace std;
 
-int main() {
+int main(int argc, char *argv[]) {
     ifstream file("test.wei");
     string line, code;
 
@@ -19,7 +19,7 @@ int main() {
     }
 
     Parser parser(code);
-    parser.test();
+    parser.Code()->getValue();
 
     return 0;
 }

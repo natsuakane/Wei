@@ -76,10 +76,17 @@ public:
         Environments::setvar("入力", input);
     }
 
-    void test() {
-        ExpressionTree* result = Code();
-        pair<Value*, string> v = result->getValue();
+    ExpressionTree* Code() {
+        skipspace();
+        vector<ExpressionTree*> programs;
+        int current_pos = pos;
+        while(!isend()) {
+            programs.push_back(statement());
+            skipspace();
+        }
+        return new Block(programs, gyosu, current_pos);
     }
+
 private:
     string code;
     int pos;
@@ -460,16 +467,5 @@ private:
         }
         one_kanji("）");
         return parameters;
-    }
-
-    ExpressionTree* Code() {
-        skipspace();
-        vector<ExpressionTree*> programs;
-        int current_pos = pos;
-        while(!isend()) {
-            programs.push_back(statement());
-            skipspace();
-        }
-        return new Block(programs, gyosu, current_pos);
     }
 };
