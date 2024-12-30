@@ -93,7 +93,7 @@ private:
     int gyosu;
     void one_kanji(string kanji) {
         if(kanji.size() != 3 || code.size() - pos < 3 || (code[pos] != kanji[0] || code[pos+1] != kanji[1] || code[pos+2] != kanji[2])) {
-            cout << invalid_kanji(gyosu, pos/3+3, code.substr(pos, 3), kanji) << endl;;
+            throw runtime_error(invalid_kanji(gyosu, pos/3+3, code.substr(pos, 3), kanji));
         }
         pos+=3;
     }

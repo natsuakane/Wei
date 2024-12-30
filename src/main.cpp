@@ -6,7 +6,10 @@
 using namespace std;
 
 int main(int argc, char *argv[]) {
-    ifstream file("test.wei");
+    if(argc == 1) {
+        std::cout << "Unable to open file\n";
+    }
+    ifstream file(argv[1]);
     string line, code;
 
     if(file.is_open()) {
@@ -19,7 +22,13 @@ int main(int argc, char *argv[]) {
     }
 
     Parser parser(code);
-    parser.Code()->getValue();
+    try{
+        parser.Code()->getValue();
+    }
+    catch(const std::exception& e) {
+        cout << e.what() << endl;
+        return 1;
+    }
 
     return 0;
 }
