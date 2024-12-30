@@ -2,7 +2,8 @@
 我制作偽中国語之機械言語（笑）
 糞適当言語
 
-例：Fibonacci
+## 例
+Fibonacci
 ```
 関数「普伊墓那値」引数「数」行
 「結果」是「数」
@@ -20,7 +21,6 @@
 ```
 
 本言語簡単物体定義可能
-例：
 ```
 「亜」是物体《「伊」是三、「宇」是一》
 「亜」之「伊」是五
@@ -36,4 +36,14 @@
 5
 1
 object(0x6000004d4840)
+```
+
+## 建築（Build）手順
+```bash
+git clone https://github.com/natsuakane/Wei-lang.git
+cd Wei-lang
+mkdir build
+cd build
+cmake ..
+cmake --build .
 ```
