@@ -47,3 +47,8 @@ cd build
 cmake ..
 cmake --build .
 ```
+
+## 実行方法
+```
+./weilang {FILE_NAME}
+```
