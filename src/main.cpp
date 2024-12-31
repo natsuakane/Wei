@@ -1,8 +1,8 @@
 #include<iostream>
 #include<fstream>
-#include"convert_num.cpp"
+#include"convert_num.h"
 #include"Parser.cpp"
-#include"Environment.cpp"
+#include"Environment.h"
 using namespace std;
 
 int main(int argc, char *argv[]) {

@@ -1,9 +1,10 @@
 #pragma once
-#include"ExpressionTree.cpp"
-#include"Exceptions.cpp"
+#include<iostream>
+#include"ExpressionTree.h"
+#include"Exceptions.h"
 #include <stdexcept>
-#include"Value.cpp"
-#include"Environment.cpp"
+#include"Value.h"
+#include"Environment.h"
 using namespace std;
 
 class GetLength : public ExpressionTree {

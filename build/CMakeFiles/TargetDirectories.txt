@@ -1,0 +1,3 @@
+/Users/yuta/Documents/準中文/build/CMakeFiles/weilang.dir
+/Users/yuta/Documents/準中文/build/CMakeFiles/edit_cache.dir
+/Users/yuta/Documents/準中文/build/CMakeFiles/rebuild_cache.dir

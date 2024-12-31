@@ -1,11 +1,11 @@
 #pragma once
 #include <stdexcept>
-#include"ExpressionTree.cpp"
-#include"Exceptions.cpp"
-#include"Value.cpp"
+#include"ExpressionTree.h"
+#include"Exceptions.h"
+#include"Value.h"
 #include"Number.cpp"
 #include"Variable.cpp"
-#include"Environment.cpp"
+#include"Environment.h"
 #include<iostream>
 using namespace std;
 

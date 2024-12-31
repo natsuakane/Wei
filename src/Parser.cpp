@@ -3,14 +3,14 @@
 #include <stdexcept>
 #include<vector>
 #include<string>
-#include "Exceptions.cpp"
-#include "ExpressionTree.cpp"
+#include"Exceptions.h"
+#include "ExpressionTree.h"
 #include "Number.cpp"
 #include "FloatNumber.cpp"
 #include "Variable.cpp"
-#include "UnaryOperator.cpp"
-#include "BinaryOperator.cpp"
-#include "Block.cpp"
+#include "UnaryOperator.h"
+#include "BinaryOperator.h"
+#include "Block.h"
 #include "DecFunc.cpp"
 #include "CallFunc.cpp"
 #include "String.cpp"
@@ -21,9 +21,9 @@
 #include "If.cpp"
 #include "While.cpp"
 #include "LibFuncCode.cpp"
-#include "Environment.cpp"
-#include "Value.cpp"
-#include "convert_num.cpp"
+#include "Environment.h"
+#include"Value.h"
+#include "convert_num.h"
 using namespace std;
 
 class Parser {

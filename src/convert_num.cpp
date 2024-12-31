@@ -1,11 +1,8 @@
-#pragma once
-#include<string>
-#include<cmath>
-using namespace std;
+#include"convert_num.h"
 
-vector<string> numlist1 = {"零", "一", "二", "三", "四", "五", "六", "七", "八", "九"};
-vector<string> numlist2 = {"", "十", "百", "千"};
-vector<string> numlist3 = {"", "万", "億", "兆", "京", "垓", "秭", "負"};
+std::vector<string> numlist1 = {"零", "一", "二", "三", "四", "五", "六", "七", "八", "九"};
+std::vector<string> numlist2 = {"", "十", "百", "千"};
+std::vector<string> numlist3 = {"", "万", "億", "兆", "京", "垓", "秭", "負"};
 
 std::string tokansuji(long n) {
     std::string ans = "";
@@ -32,7 +29,7 @@ std::string tokansuji(long n) {
     return ans;
 }
 
-int containspos(vector<string> kansuji, string moji) {
+int containspos(std::vector<string> kansuji, string moji) {
     for(int i = 0; i < kansuji.size(); i++) {
         if(kansuji[i][0] == moji[0] && kansuji[i][1] == moji[1] && kansuji[i][2] == moji[2]) return i;
     }
@@ -76,7 +73,7 @@ long tosuji(string s) {
     return result;
 }
 
-double toshosu(string s) {
+double toshosu(std::string s) {
     bool isminus = false;
     if(s[0] == '\350' && s[1] == '\262' && s[2] == '\240') {
         s = s.substr(3, s.size()-3);
@@ -98,7 +95,7 @@ double toshosu(string s) {
 
         if(containspos(numlist1, moji) != -1) {
             int num = containspos(numlist1, moji);
-            string moji2 = s.substr(i+3, 3);
+            std::string moji2 = s.substr(i+3, 3);
             if(containspos(numlist2, moji2) != -1) {
                 int keta1 = containspos(numlist2, moji2);
                 n += num * (int)std::pow(10, keta1);

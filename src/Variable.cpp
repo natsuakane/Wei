@@ -1,8 +1,8 @@
 #pragma once
 #include<string>
-#include"ExpressionTree.cpp"
-#include"Exceptions.cpp"
-#include"Environment.cpp"
+#include"ExpressionTree.h"
+#include"Exceptions.h"
+#include"Environment.h"
 using namespace std;
 
 class Variable : public ExpressionTree {

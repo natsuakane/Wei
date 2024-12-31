@@ -1,8 +1,8 @@
 #pragma once
-#include"ExpressionTree.cpp"
-#include"Exceptions.cpp"
+#include"ExpressionTree.h"
+#include"Exceptions.h"
 #include <stdexcept>
-#include"Value.cpp"
+#include"Value.h"
 using namespace std;
 
 class If : public ExpressionTree {
